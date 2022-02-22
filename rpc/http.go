@@ -250,10 +250,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		ctx = context.WithValue(ctx, "Origin", origin)
 	}
 
-	// put user credentials to context
-	if user := r.Header.Get("X-MultiRPC-User"); user != "" {
-		ctx = context.WithValue(ctx, "X-MultiRPC-User", user)
-	}
+	// put headers to context
+	ctx = context.WithValue(ctx, "Header", r.Header)
 
 	w.Header().Set("content-type", contentType)
 	codec := newHTTPServerConn(r, w)
