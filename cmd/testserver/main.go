@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/Ankr-network/go-ethereum-jsonrpc/rpc"
+	"github.com/Ankr-network/go-ethereum-jsonrpc/jsonrpc"
 	"log"
 	"net/http"
 )
@@ -30,7 +30,7 @@ func (s *TestServer) TestRequest(ctx context.Context, request Request) (*Respons
 }
 
 func main()  {
-	jsonRpc := rpc.NewServer()
+	jsonRpc := jsonrpc.NewServer()
 	if err := jsonRpc.RegisterName("namespace", &TestServer{}); err != nil{
 		log.Fatalf("failed to register namespace")
 	}

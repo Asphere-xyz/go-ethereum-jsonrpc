@@ -83,11 +83,11 @@ criteria:
 
  - method must be exported
  - first method argument type must be context.Context
- - method must have return types (rpc.Subscription, error)
+ - method must have return types (jsonrpc.Subscription, error)
 
 An example method:
 
- func (s *BlockChainService) NewBlocks(ctx context.Context) (rpc.Subscription, error) {
+ func (s *BlockChainService) NewBlocks(ctx context.Context) (jsonrpc.Subscription, error) {
  	...
  }
 
@@ -103,8 +103,8 @@ For more information about subscriptions, see https://github.com/ethereum/go-eth
 
 Reverse Calls
 
-In any method handler, an instance of rpc.Client can be accessed through the
+In any method handler, an instance of jsonrpc.Client can be accessed through the
 ClientFromContext method. Using this client instance, server-to-client method calls can be
 performed on the RPC connection.
 */
-package rpc
+package jsonrpc
