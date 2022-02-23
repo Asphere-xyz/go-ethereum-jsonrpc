@@ -29,9 +29,9 @@ func (s *TestServer) TestRequest(ctx context.Context, request Request) (*Respons
 
 }
 
-func main()  {
+func main() {
 	jsonRpc := jsonrpc.NewServer()
-	if err := jsonRpc.RegisterName("namespace", &TestServer{}); err != nil{
+	if err := jsonRpc.RegisterName("namespace", &TestServer{}); err != nil {
 		log.Fatalf("failed to register namespace")
 	}
 	log.Printf("listening localhost:8801")

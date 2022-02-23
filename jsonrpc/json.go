@@ -289,9 +289,13 @@ func parsePositionalArguments(rawArgs json.RawMessage, types []reflect.Type) ([]
 		// not in the spec because our own client used to send it.
 	case err != nil:
 		return nil, err
-	case tok == json.Delim('[') || tok == json.Delim('{'): // to allow named arguments
+	case tok == json.Delim('['): // to allow named arguments
 		// Read argument array.
 		if args, err = parseArgumentArray(dec, types); err != nil {
+			return nil, err
+		}
+	case tok == json.Delim('{'):
+		if args, err = parseArgumentObject(rawArgs, types); err != nil {
 			return nil, err
 		}
 	default:
@@ -305,6 +309,17 @@ func parsePositionalArguments(rawArgs json.RawMessage, types []reflect.Type) ([]
 		args = append(args, reflect.Zero(types[i]))
 	}
 	return args, nil
+}
+
+func parseArgumentObject(rawArgs json.RawMessage, types []reflect.Type) ([]reflect.Value, error) {
+	if len(types) != 1 {
+		return nil, fmt.Errorf("exactly one object argument is allowed")
+	}
+	argval := reflect.New(types[0])
+	if err := json.Unmarshal(rawArgs, argval.Interface()); err != nil {
+		return nil, fmt.Errorf("failed to parse argument: %s", err)
+	}
+	return []reflect.Value{argval}, nil
 }
 
 func parseArgumentArray(dec *json.Decoder, types []reflect.Type) ([]reflect.Value, error) {
