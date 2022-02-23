@@ -289,13 +289,20 @@ func parsePositionalArguments(rawArgs json.RawMessage, types []reflect.Type) ([]
 		// not in the spec because our own client used to send it.
 	case err != nil:
 		return nil, err
-	case tok == json.Delim('['): // to allow named arguments
+	case tok == json.Delim('['):
 		// Read argument array.
 		if args, err = parseArgumentArray(dec, types); err != nil {
 			return nil, err
 		}
 	case tok == json.Delim('{'):
-		if args, err = parseArgumentObject(rawArgs, types); err != nil {
+		// to allow named arguments we wrap object to array
+		wrappedRawArgs := make([]byte, 0)
+		wrappedRawArgs = append(wrappedRawArgs, uint8('['))
+		wrappedRawArgs = append(wrappedRawArgs, rawArgs...)
+		wrappedRawArgs = append(wrappedRawArgs, uint8(']'))
+		dec = json.NewDecoder(bytes.NewReader(wrappedRawArgs))
+		_, _ = dec.Token()
+		if args, err = parseArgumentArray(dec, types); err != nil {
 			return nil, err
 		}
 	default:
