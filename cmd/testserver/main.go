@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/Ankr-network/go-ethereum-jsonrpc/jsonrpc"
+	"github.com/Asphere-xyz/go-ethereum-jsonrpc/jsonrpc"
 	"log"
 	"net/http"
 )
