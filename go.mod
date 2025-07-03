@@ -1,6 +1,6 @@
 module github.com/Asphere-xyz/go-ethereum-jsonrpc
 
-go 1.23.0
+go 1.23.10
 
 require (
 	github.com/deckarep/golang-set v1.8.0
